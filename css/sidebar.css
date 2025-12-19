@@ -1,0 +1,82 @@
+    :root {
+      --blue: #1e40af;
+      --red: #dc2626;
+      --light: #f8fafc;
+      --gray: #64748b;
+    }
+/* SIDEBAR */
+    .sidebar {
+    width: 70px;
+    background: linear-gradient(180deg, var(--blue), var(--red));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    gap: 15px;
+    transition: width 0.3s;
+    overflow: hidden;
+    position: relative;
+    }
+
+    /* LOGO */
+    .logo-side {
+    display: block;
+    margin: 0 auto 30px auto;
+    width: 50%;
+    max-width: 300px;
+    }
+
+    /* SIDEBAR EXPAND ON HOVER */
+    .sidebar:hover {
+    width: 200px;
+    align-items: flex-start;
+    padding-left: 20px;
+    }
+
+    /* SIDEBAR ITEMS */
+    .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    position: relative; /* for icon centering */
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 12px;
+    transition: background 0.2s, transform 0.3s;
+    }
+
+    /* ICON */
+    .sidebar-item i {
+    font-size: 18px;
+    opacity: 0.9;
+    position: absolute; /* absolute for collapsed centering */
+    left: 50%;
+    transform: translateX(-50%) translateY(3px);
+    transition: transform 0.3s, left 0.3s;
+    }
+
+    /* ICON MOVE DOWN WHEN COLLAPSED */
+    .sidebar:hover .sidebar-item i {
+    position: relative; /* normal flow when expanded */
+    left: 0;
+    transform: translateX(0) translateY(0);
+    }
+
+    /* TEXT */
+    .sidebar-item span {
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    }
+
+    /* SHOW TEXT ON EXPAND */
+    .sidebar:hover .sidebar-item span {
+    opacity: 1;
+    }
+
+    /* HOVER EFFECT ON ITEMS */
+    .sidebar-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    }

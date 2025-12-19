@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/reports.css">
+
+
+</head>
+<body>
+
+<div class="sidebar">
+    <img src="resources/images/nfa_logo.png" alt="nfa_logo" class="logo-side">
+    <div class="sidebar-item active" data-page="dashboard.html">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </div>
+    <div class="sidebar-item" data-page="employees.html">
+        <i class="fa-solid fa-users"></i>
+        <span>Employees</span>
+    </div>
+    <div class="sidebar-item" data-page="reports.html">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Reports</span>
+    </div>
+    <div class="sidebar-item" data-page="settings.html">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+    </div>
+</div>
+
+  <!-- Main content -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <h2>Reports</h2>
+        <div class="card-item search-box">
+            <input type="text" placeholder="Search Name" id="report-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+    </div>
+
+    <!-- Employee Info Card -->
+      
+        <div class="report-card">
+        <div class="card-item name">
+            <span class="card-title">Employee Name</span>
+            <span class="card-value">Melvin Pralalay</span>
+        </div>
+        <div class="card-item balance">
+            <span class="card-title">Balance as of June 2024</span>
+            <span class="card-value">1.075 </span>
+        </div>
+        </div>
+
+    <!-- Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>MONTH</th>
+          <th colspan="2">EARNED</th>
+          <th colspan="2">UTILIZED</th>
+          <th style="color: white;">BALANCE END</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th>HRS</th>
+          <th>DATE</th>
+          <th>HRS</th>
+          <th>DATE</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="MONTH">June 2024</td>
+          <td data-label="Earned HRS">5.82</td>
+          <td data-label="Earned DATE">6/29</td>
+          <td data-label="Utilized HRS"></td>
+          <td data-label="Utilized DATE"></td>
+          <td data-label="Balance End">6.895</td>
+        </tr>
+        <tr>
+          <td data-label="MONTH">July 2024</td>
+          <td data-label="Earned HRS">10.155</td>
+          <td data-label="Earned DATE">7/7,14</td>
+          <td data-label="Utilized HRS">4</td>
+          <td data-label="Utilized DATE">7/10(pm)</td>
+          <td data-label="Balance End">2.895</td>
+        </tr>
+        <tr>
+          <td data-label="MONTH">August 2025</td>
+          <td data-label="Earned HRS">6.005</td>
+          <td data-label="Earned DATE">8/7,10</td>
+          <td data-label="Utilized HRS"></td>
+          <td data-label="Utilized DATE"></td>
+          <td data-label="Balance End">19.055</td>
+        </tr>
+        <tr>
+          <td data-label="MONTH">October 2024</td>
+          <td data-label="Earned HRS">8.13</td>
+          <td data-label="Earned DATE">10/7</td>
+          <td data-label="Utilized HRS"></td>
+          <td data-label="Utilized DATE"></td>
+          <td data-label="Balance End">27.185</td>
+        </tr>
+        <tr>
+          <td data-label="MONTH">November 2024</td>
+          <td data-label="Earned HRS"></td>
+          <td data-label="Earned DATE"></td>
+          <td data-label="Utilized HRS">20</td>
+          <td data-label="Utilized DATE">11/11 12/3,19</td>
+          <td data-label="Balance End">7.185</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="export-btn-container">
+    <button id="export-btn">Export to File</button>
+    </div>
+ 
+    
+
+<script type="module" src="js/reports-records.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/reports-export.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+</body>
+</html>

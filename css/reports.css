@@ -1,0 +1,162 @@
+body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      display: flex;
+      background: #f8fafc;
+    }
+.report-card {
+  display: flex;
+  justify-content: space-between; /* Push items to left and right */
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.card-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-title {
+  font-weight: 500;
+  color: #64748b; /* grayish title */
+  margin-bottom: 5px;
+}
+
+.card-value {
+  font-weight: 600;
+  color: #1e40af; /* blue value */
+  font-size: 18px;
+}
+
+/* Ensure balance aligns to right */
+.card-item.balance {
+  text-align: right;
+}
+
+.search-box {
+  position: relative;
+  width: 180px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 6px 30px 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.search-box i {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+}
+    /* Main content */
+    .main {
+      padding: 20px;
+      width: calc(100% - 220px);
+    }
+
+    /* Topbar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .topbar h2 {
+      color: #1e40af; /* Blue theme */
+      margin: 0;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background: #0a13b7; /* Red header */
+      color: #fff;
+      font-weight: 600;
+    }
+
+    td {
+      color: #1e40af; /* Blue text */
+    }
+
+    td:last-child, th:last-child {
+      color: #ff0c0c;
+    }
+
+    tr:nth-child(even) {
+      background: #f1f5f9;
+    }
+
+    @media (max-width: 900px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      tr {
+        margin-bottom: 15px;
+      }
+
+      th {
+        text-align: left;
+      }
+
+      td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        text-align: left;
+        font-weight: 600;
+        color: #64748b;
+      }
+    }
+
+    .export-btn-container {
+  display: flex;
+  justify-content: flex-end; /* Align button to the right */
+  margin-top: 15px; /* Space above the button */
+}
+
+#export-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #dc2626; /* Red theme */
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#export-btn:hover {
+  background-color: #b91c1c;
+}

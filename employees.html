@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/employees.css">
+
+
+</head>
+<body>
+
+<div class="sidebar">
+    <img src="resources/images/nfa_logo.png" alt="nfa_logo" class="logo-side">
+    <div class="sidebar-item active" data-page="dashboard.html">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </div>
+    <div class="sidebar-item" data-page="employees.html">
+        <i class="fa-solid fa-users"></i>
+        <span>Employees</span>
+    </div>
+    <div class="sidebar-item" data-page="reports.html">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Reports</span>
+    </div>
+    <div class="sidebar-item" data-page="settings.html">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+    </div>
+</div>
+
+  <!-- Main content -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <h2>EMPLOYEES</h2>
+        <div class="card-item search-box">
+            <input type="text" placeholder="Search Name" id="report-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+    </div>
+
+    <!-- Employee Info Card -->
+      <div class="table-wrapper">
+
+          <div class="table-actions">
+            <button id="addCtoBtn" class="add-btn">
+              <i class="fa-solid fa-user-plus"></i> Add Employee's CTO 
+            </button>
+          </div>
+
+    <table class="employee-table">
+
+      <thead>
+        <tr>
+          <th rowspan="2">No.</th>
+          <th rowspan="2">Name</th>
+
+          <th colspan="3">January</th>
+          <th colspan="3">February</th>
+          <th colspan="3">March</th>
+          <th colspan="3">April</th>
+          <th colspan="3">May</th>
+          <th colspan="3">June</th>
+          <th colspan="3">July</th>
+          <th colspan="3">August</th>
+          <th colspan="3">September</th>
+          <th colspan="3">October</th>
+          <th colspan="3">November</th>
+          <th colspan="3">December</th>
+
+          <th rowspan="2" style="color: white;">Total Balance End</th>
+        </tr>
+
+        <tr>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th>Earned</th><th>Balance End</th>
+          <th>Utilized</th><th style="color: white;">Earned</th><th style="color: white;">Balance End</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>-</td>
+          <td>-</td>
+
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+          <td>0</td><td>0</td><td>0</td>
+
+          <td>0</td>
+        </tr>
+      </tbody>
+
+    </table>
+    </div>
+    <!-- <div class="export-btn-container">
+    <button id="export-btn">Export to File</button>
+    </div> -->
+
+
+ <!-- Add Employee Modal -->
+  <!-- Add Employee Modal -->
+<div id="employeeModal" class="modal">
+  <div class="modal-card">
+
+    <!-- Add header with close button -->
+    <div class="modal-header">
+      <h3>Add Employee Record</h3>
+      <span class="close-btn" onclick="closeModal()">×</span>
+    </div>
+
+    <h4>Employee Name</h4>
+    <input type="text" id="empName" placeholder="Enter name">
+
+    <h4>Balance (Start)</h4>
+    <input type="number" id="balanceStart">
+
+    <h4>Month</h4>
+    <select id="monthSelect">
+      <option>January</option>
+      <option>February</option>
+      <option>March</option>
+      <option>April</option>
+      <option>May</option>
+      <option>June</option>
+      <option>July</option>
+      <option>August</option>
+      <option>September</option>
+      <option>October</option>
+      <option>November</option>
+      <option>December</option>
+    </select>
+
+    <!-- Earned Section -->
+    <div class="section">
+      <h4>Earned</h4>
+      <label>Dates (MM/DD)</label>
+      <div id="earnedDates"></div>
+      <button class="small-btn" onclick="addEarnedDate()">+ Add Date</button>
+
+      <label>Hours</label>
+      <input type="number" id="earnedHours" placeholder="Total hours earned">
+    </div>
+
+    <!-- Utilized Section -->
+    <div class="section">
+      <h4>Utilized</h4>
+      <label>Dates (MM/DD)</label>
+      <div id="utilizedDates"></div>
+      <button class="small-btn" onclick="addUtilizedDate()">+ Add Date</button>
+
+      <label>Hours</label>
+      <input type="number" id="utilizedHours" placeholder="Total hours utilized">
+    </div>
+
+    <h4>Balance End</h4>
+    <input type="number" id="balanceEnd">
+
+    <div class="modal-actions">
+      <button onclick="saveEmployee()">Save</button>
+      <button class="cancel" onclick="closeModal()">Cancel</button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- -------------------Name Modal-------------------- -->
+<div id="empDetailsModal" class="modal">
+  <div class="modal-card large">
+
+    <div class="modal-header">
+      <h3 id="empModalName"></h3>
+      <span class="close-btn" onclick="closeEmpModal()">×</span>
+    </div>
+
+    <div class="balance-summary">
+      
+      <span>Balance as of <strong id="empBalanceDate"></strong></span>
+      <span class="balance-value" id="empTotalBalance"></span>
+      <span>Balance Start <strong id="empBalanceDate"></strong></span>
+      <span class="balance-value" id="empBalanceStart"></span>
+      
+    </div>
+
+
+    <table class="details-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>Earned (Hrs)</th>
+          <th>Earned Date</th>
+          <th>Utilized (Hrs)</th>
+          <th>Utilized Date</th>
+          <th>Balance End</th>
+        </tr>
+      </thead>
+      <tbody id="empDetailsTableBody"></tbody>
+    </table>
+
+  </div>
+</div>
+
+    
+<script type="module" src="js/employees-display.js"></script>
+<script type="module" src="js/employees.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/reports-export.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+</body>
+</html>

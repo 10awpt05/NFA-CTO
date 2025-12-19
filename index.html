@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employer Medical Portal</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
+    <img src="resources/images/nfa_logo.png" id="secret-logo" alt="NFA Logo">
+    <h1 id="left-title">CTO<br>-<br>COMPENSATORY TIME OFF</h1>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+<!-- Popup Modal -->
+<div id="popup" class="popup hidden">
+  <div class="popup-box">
+    <h3 id="popupTitle"></h3>
+    <p id="popupMessage"></p>
+    <button id="popupBtn">OK</button>
+  </div>
+</div>
+
+    <!-- USER LOGIN -->
+    <div id="userView" class="view show">
+      <div class="logo" id="secret-nav">LOGIN</div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="userEmail">
+      </div>
+
+      <div class="form-group password-group">
+        <label>Password</label>
+        <input type="password" class="password-input" id="userPassword">
+        <i class="fa-solid fa-eye-slash toggle-password"></i>
+      </div>
+
+
+      <button class="login-btn" id="userLoginBtn">LOGIN</button>
+    </div>
+
+    <!-- ADMIN LOGIN -->
+    <div id="adminView" class="view hide">
+      <div class="logo" id="secret-nav2">Admin Login</div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="emailA" id="adminEmail">
+      </div>
+
+      <div class="form-group password-group">
+        <label>Password</label>
+        <input type="passwordA" class="password-input" id="adminPassword">
+        <i class="fa-solid fa-eye-slash toggle-password"></i>
+      </div>
+
+      <button id="adminLoginBtn" class="login-btn">ADMIN LOGIN</button>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Main JS -->
+  <script src="js/firebase.js"></script>
+  <script type="module" src="js/login-auth.js"></script>
+<script src="js/secret-admin.js"></script>
+</body>
+</html>
