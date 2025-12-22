@@ -51,8 +51,9 @@ function populateFiscalMonths() {
   fiscalMonths.forEach((month, index) => {
     const yearLabel = index >= 7 ? baseYear + 1 : baseYear;
     const option = document.createElement("option");
-    option.value = `${month}|${yearLabel}`;
-    option.textContent = `${month} (${yearLabel})`;
+  option.value = month;    // keep month only
+option.textContent = month; // display month only
+
     monthSelect.appendChild(option);
   });
 }
@@ -209,59 +210,59 @@ window.closeEmpModal = () =>
 /* =========================
    AUTOCOMPLETE (EMP NAME)
 ========================= */
-const suggestionBox = document.createElement("div");
-suggestionBox.id = "emp-suggestions";
-suggestionBox.style.cssText = `
-  position:absolute;
-  display:none;
-  background:#fff;
-  border:1px solid #ddd;
-  border-radius:8px;
-  max-height:200px;
-  overflow-y:auto;
-  z-index:2000;
-  box-shadow:0 8px 20px rgba(0,0,0,.12);
-`;
-empNameInput.closest(".modal-card").appendChild(suggestionBox);
+// const suggestionBox = document.createElement("div");
+// suggestionBox.id = "emp-suggestions";
+// suggestionBox.style.cssText = `
+//   position:absolute;
+//   display:none;
+//   background:#fff;
+//   border:1px solid #ddd;
+//   border-radius:8px;
+//   max-height:200px;
+//   overflow-y:auto;
+//   z-index:2000;
+//   box-shadow:0 8px 20px rgba(0,0,0,.12);
+// `;
+// empNameInput.closest(".modal-card").appendChild(suggestionBox);
 
-empNameInput.addEventListener("input", async () => {
-  const q = empNameInput.value.toLowerCase();
-  if (!q) return suggestionBox.style.display = "none";
+// empNameInput.addEventListener("input", async () => {
+//   const q = empNameInput.value.toLowerCase();
+//   if (!q) return suggestionBox.style.display = "none";
 
-  const snap = await get(ref(database, "employees/CTO"));
-  if (!snap.exists()) return;
+//   const snap = await get(ref(database, "employees/CTO"));
+//   if (!snap.exists()) return;
 
-  suggestionBox.innerHTML = "";
-  snap.forEach(s => {
-    if (s.key.toLowerCase().includes(q)) {
-      const d = document.createElement("div");
-      d.textContent = s.key;
-      d.style.padding = "8px";
-      d.style.cursor = "pointer";
-      d.onclick = () => {
-        empNameInput.value = s.key;
-        suggestionBox.style.display = "none";
-      };
-      suggestionBox.appendChild(d);
-    }
-  });
+//   suggestionBox.innerHTML = "";
+//   snap.forEach(s => {
+//     if (s.key.toLowerCase().includes(q)) {
+//       const d = document.createElement("div");
+//       d.textContent = s.key;
+//       d.style.padding = "8px";
+//       d.style.cursor = "pointer";
+//       d.onclick = () => {
+//         empNameInput.value = s.key;
+//         suggestionBox.style.display = "none";
+//       };
+//       suggestionBox.appendChild(d);
+//     }
+//   });
 
-  suggestionBox.style.display = "block";
-});
+//   suggestionBox.style.display = "block";
+// });
 
-function updateTableHeaderYear() {
-  const baseYear = Number(yearSelect.value);
-  const headers = document.querySelectorAll(".month-header");
+// function updateTableHeaderYear() {
+//   const baseYear = Number(yearSelect.value);
+//   const headers = document.querySelectorAll(".month-header");
 
-  headers.forEach((th, index) => {
-    const yearLabel = index >= 7 ? baseYear + 1 : baseYear;
-    th.textContent = `${fiscalMonths[index]} ${yearLabel}`;
-  });
-}
-yearSelect.addEventListener("change", () => {
-  updateTableHeaderYear();
-  listenEmployeesTable();
-});
+//   headers.forEach((th, index) => {
+//     const yearLabel = index >= 7 ? baseYear + 1 : baseYear;
+//     th.textContent = `${fiscalMonths[index]} ${yearLabel}`;
+//   });
+// }
+// yearSelect.addEventListener("change", () => {
+//   updateTableHeaderYear();
+//   listenEmployeesTable();
+// });
 
 
 /* =========================

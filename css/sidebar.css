@@ -1,25 +1,30 @@
-    :root {
+:root {
       --blue: #1e40af;
       --red: #dc2626;
       --light: #f8fafc;
       --gray: #64748b;
     }
-/* SIDEBAR */
-   .sidebar {
+     .main {
+      flex: 1;
+      background: var(--light);
+      padding: 25px 30px;
+    }
+
+.sidebar {
     width: 70px;
+    height: 100vh;         
     background: linear-gradient(180deg, var(--blue), var(--red));
     color: #fff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px 0;        /* top & bottom padding */
+    padding: 20px 0;
     transition: width 0.3s;
-    overflow: hidden;
-    position: relative;
+    overflow: hidden;           
+    position: sticky;
+    top: 0;
 }
 
-
-    /* LOGO */
     .logo-side {
     display: block;
     margin: 0 auto 30px auto;
@@ -77,15 +82,59 @@
     }
 
     /* HOVER EFFECT ON ITEMS */
-   .sidebar-item.logout {
-    margin-top: auto;     /* PUSH TO BOTTOM */
-    color: #fff;
+    .sidebar-item:hover {
+    background: rgba(255, 255, 255, 0.2);
     }
 
-    .sidebar-item.logout i {
-        color: #fff;
-    }
+    #settingsItem {
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
 
-    .sidebar-item.logout:hover {
-        background: rgba(255, 255, 255, 0.25);
-    }
+#settingsItem .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 180px;
+    background: rgba(255, 255, 255, 0.1); /* light transparent overlay */
+    backdrop-filter: blur(5px); /* ← semicolon added */
+    border-radius: 8px;
+    overflow: hidden;
+    display: none; /* hidden by default */
+    flex-direction: column;
+    z-index: 10;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateY(5px);
+}
+
+
+#settingsItem:hover .dropdown {
+    display: flex; /* show on hover */
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#settingsItem .dropdown-item {
+    padding: 12px 16px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#settingsItem .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#settingsItem .dropdown-icon {
+    margin-left: auto;
+    transition: transform 0.3s;
+}
+
+#settingsItem:hover .dropdown-icon {
+    transform: rotate(180deg);
+}

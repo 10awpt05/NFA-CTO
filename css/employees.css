@@ -635,3 +635,165 @@ tbody tr:nth-child(even) {
   transform: translateY(-1px);
   box-shadow: 0 6px 14px rgba(0,0,0,0.25);
 }
+
+
+/* =========================
+   CHANGE PASSWORD MODAL
+========================= */
+#cpModal {
+  display: none; /* hidden initially */
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.4);
+
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+#cpModal .modal-content {
+  background-color: #fff;
+  padding: 30px 25px;
+  border-radius: 16px;
+  width: 380px;
+  max-width: 90%;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  text-align: center;
+  position: relative;
+}
+
+/* Modal header */
+#cpModal h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  font-weight: 600;
+  color: #1e40af;
+  font-size: 22px;
+}
+
+/* Labels and inputs */
+#cpModal label {
+  display: block;
+  text-align: left;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+#cpModal input[type="password"] {
+  width: 100%;
+  padding: 10px 40px 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 18px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Eye icon */
+#cpModal .input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#cpModal .toggle-password {
+  position: absolute;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;       /* match input height */
+  cursor: pointer;
+  color: #64748b;
+  font-size: 16px;
+}
+
+/* Buttons */
+#cpModal .modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+#cpModal .cancelBtn {
+  flex: 1;
+  background: #e5e7eb;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#cpModal .cancelBtn:hover {
+  background-color: #d1d5db;
+}
+
+#cpModal .saveBtn {
+  flex: 1;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#cpModal .saveBtn:hover {
+  background-color: #1e3a8a;
+}
+
+#cpModal .input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+#cpModal input {
+  width: 100%;
+  padding: 12px 44px 12px 14px; /* space for eye icon */
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+/* Prevent layout jump on toggle */
+#cpModal input[type="text"],
+#cpModal input[type="password"] {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.2;
+}
+
+#cpModal .toggle-password {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #64748b;
+  font-size: 16px;
+  pointer-events: auto;
+}
+
+/* Optional hover feedback */
+#cpModal .toggle-password:hover {
+  color: #1e40af;
+}
+#empName {
+  position: relative; /* Not enough if parent is not relative */
+}
+
+.emp-input-wrapper {
+  position: relative;
+  width: 100%;
+}

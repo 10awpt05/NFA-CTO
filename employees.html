@@ -6,8 +6,9 @@
   <title>Reports</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
   <link rel="stylesheet" href="css/employees.css">
+  <link rel="stylesheet" href="css/sidebar.css">
 
 
 </head>
@@ -28,10 +29,10 @@
       <i class="fa-solid fa-gear"></i>
       <span>Settings <i class="fa-solid fa-chevron-down dropdown-icon"></i></span>
       <div class="dropdown">
-          <div class="dropdown-item" id="changePassBtn">
+          <div class="dropdown-item" id="cPass">
               <i class="fa-solid fa-key"></i> Change Password
           </div>
-          <div class="dropdown-item" id="logoutBtn">
+          <div class="dropdown-item" id="logoutButton">
               <i class="fa-solid fa-right-from-bracket"></i> Logout
           </div>
       </div>
@@ -150,7 +151,9 @@
     </div>
 
     <h4>Employee Name</h4>
-    <input type="text" id="empName" placeholder="Enter name">
+    <div class="emp-input-wrapper">
+      <input type="text" id="empName" placeholder="Enter name">
+    </div>
 
     <h4>Balance (Start)</h4>
     <input type="number" id="balanceStart">
@@ -238,93 +241,52 @@
 
   </div>
 </div>
-<div class="modal-overlay hidden" id="logoutModal">
-  <div class="modal">
-    <h3>Confirm Logout</h3>
-    <p>Are you sure you want to log out?</p>
 
-    <div class="modal-actions">
-      <button class="btn-cancel" id="cancelLogout">Cancel</button>
-      <button class="btn-logout" id="confirmLogout">Logout</button>
+
+<!-- Modal -->
+<div id="cpModal" class="modal">
+    <div class="modal-content">
+       
+        <h2>Change Password</h2>
+        <form id="changePasswordForm">
+            <label>Current Password</label>
+            <div class="input-wrapper">
+                <input type="password" id="currentPassword">
+                <i class="fa-solid fa-eye toggle-password"></i>
+            </div>
+
+            <label>New Password</label>
+            <div class="input-wrapper">
+                <input type="password" id="newPassword">
+                <i class="fa-solid fa-eye toggle-password"></i>
+            </div>
+
+            <label>Confirm New Password</label>
+            <div class="input-wrapper">
+                <input type="password" id="confirmPassword">
+                <i class="fa-solid fa-eye toggle-password"></i>
+            </div>
+
+            <div class="modal-buttons">
+                <button type="button" class="cancelBtn">Cancel</button>
+                <button type="submit" class="saveBtn">Save</button>
+            </div>
+        </form>
     </div>
-  </div>
 </div>
-<div class="modal-overlay hidden" id="changePassModal">
-  <div class="modal">
-    <h3>Change Password</h3>
-    <form id="changePassForm">
 
-      <label for="currentPass">Current Password</label>
-      <div class="password-field">
-        <input type="password" id="currentPass" required>
-        <i class="fa-solid fa-eye toggle-password"></i>
-      </div>
 
-      <label for="newPass">New Password</label>
-      <div class="password-field">
-        <input type="password" id="newPass" required>
-        <i class="fa-solid fa-eye toggle-password"></i>
-      </div>
-
-      <label for="confirmPass">Confirm New Password</label>
-      <div class="password-field">
-        <input type="password" id="confirmPass" required>
-        <i class="fa-solid fa-eye toggle-password"></i>
-      </div>
-
-      <div class="modal-actions">
-        <button type="button" class="btn-cancel" id="cancelChangePass">Cancel</button>
-        <button type="submit" class="btn-save">Save</button>
-      </div>
-    </form>
-  </div>
-</div>
-    
 <script type="module" src="js/employees-display.js"></script>
 <script type="module" src="js/employees.js"></script>
 <script type="module" src="js/reports-export.js"></script>
 <script type="module" src="js/export-excelAllCTO.js"></script>
-<script type="module" src="js/login-auth.js"></script>
-
-<!-- <script type="module" src="js/dashboard.js"></script> -->
 
 <script src="js/navigation.js"></script>
-<script src="js/reports-export.js"></script>
+<!-- <script type="module" src="js/dashboard.js"></script> -->
+<script type="module" src="js/login-auth.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-  const sidebarItems = document.querySelectorAll('.sidebar-item');
-
-  sidebarItems.forEach(item => {
-    item.addEventListener('click', () => {
-      // If logout button clicked, open modal
-      if(item.id === 'logoutBtn') return;
-
-      sidebarItems.forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-
-      const page = item.getAttribute('data-page');
-      window.location.href = page;
-    });
-  });
-
-  const logoutBtn = document.getElementById('logoutBtn');
-  const modal = document.getElementById('logoutModal');
-  const cancelBtn = document.getElementById('cancelLogout');
-  const confirmBtn = document.getElementById('confirmLogout');
-
-  logoutBtn.addEventListener('click', () => modal.classList.remove('hidden'));
-  cancelBtn.addEventListener('click', () => modal.classList.add('hidden'));
-  confirmBtn.addEventListener('click', async () => {
-    modal.classList.add('hidden');
-    await logout();
-  });
-});
-
-</script>
 
 </body>
 </html>
