@@ -20,7 +20,7 @@
 
 * {
   box-sizing: border-box;
-  font-family: 'df';
+  /* font-family: 'goodtimes'; */
   letter-spacing: 4px;
 }
 
@@ -89,7 +89,7 @@ body.fade-out {
   display: flex;
   justify-content: center;
   font-size: 30px;
-  font-family: 'df';
+  /* font-family: 'df'; */
   letter-spacing: 4px;
 }
 
