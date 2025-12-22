@@ -797,3 +797,82 @@ tbody tr:nth-child(even) {
   position: relative;
   width: 100%;
 }
+
+#logoutModal {
+  display: none; /* hidden initially */
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+#logoutModal .modal {
+  background: white;
+  padding: 20px 25px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+#logoutModal h3 {
+  margin-bottom: 10px;
+  color: #1e40af;
+}
+
+#logoutModal p {
+  margin-bottom: 20px;
+}
+
+#logoutModal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+#logoutModal .btn-cancel {
+  background: #e5e7eb;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#logoutModal .btn-logout {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#logoutModal .btn-cancel:hover {
+  background: #d1d5db;
+}
+
+#logoutModal .btn-logout:hover {
+  background: #b91c1c;
+}
+/* Hide elements with hidden class */
+.hidden {
+  display: none !important;
+}
+#logoutModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+  display: none; /* hidden by default */
+  z-index: 10000;
+}
+
+#logoutModal .modal-card {
+  background: #fff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  text-align: center;
+}

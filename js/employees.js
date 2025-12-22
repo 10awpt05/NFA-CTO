@@ -348,3 +348,31 @@ const empCancelBtn = document.querySelector("#employeeModal .cancel");
 empCancelBtn.addEventListener("click", () => {
   modal.style.display = "none";
 });
+
+const logoutBtn = document.getElementById("logoutButton");
+const logoutModal = document.getElementById("logoutModal");
+const cancelLogout = document.getElementById("cancelLogout");
+const confirmLogout = document.getElementById("confirmLogout");
+
+// Open logout modal
+logoutBtn.addEventListener("click", () => {
+  logoutModal.style.display = "flex";
+});
+
+// Cancel logout
+cancelLogout.addEventListener("click", () => {
+  logoutModal.style.display = "none";
+});
+
+// Confirm logout
+confirmLogout.addEventListener("click", () => {
+  // Clear auth/session if needed
+  window.location.href = "index.html";
+});
+
+// Close modal if clicking outside the modal card
+logoutModal.addEventListener("click", (e) => {
+  if (e.target === logoutModal) {
+    logoutModal.style.display = "none";
+  }
+});
