@@ -114,6 +114,7 @@ async function saveEmployee() {
   const name = document.getElementById("empName").value.trim();
   const balanceStart = Number(document.getElementById("balanceStart").value) || 0;
   const month = document.getElementById("monthSelect").value;
+  const year = document.getElementById("yearSelect").value; // ✅ YEAR
   const earnedHours = Number(document.getElementById("earnedHours").value) || 0;
   const utilizedHours = Number(document.getElementById("utilizedHours").value) || 0;
 
@@ -152,17 +153,22 @@ async function saveEmployee() {
     const employeeRef = ref(database, `employees/CTO/${name}`);
     const snapshot = await get(employeeRef);
 
-    let existingMonths = {};
+    let existingYears = {};
     let existingBalanceStart = balanceStart;
 
     if (snapshot.exists()) {
       const data = snapshot.val();
-      existingMonths = data.Months || {};
+      existingYears = data.Years || {};
       existingBalanceStart = data.BalanceStart ?? balanceStart;
     }
 
-    // 🔹 Merge month instead of overwrite
-    existingMonths[month] = {
+    // ✅ Ensure year object exists
+    if (!existingYears[year]) {
+      existingYears[year] = {};
+    }
+
+    // ✅ Save under YEAR → MONTH
+    existingYears[year][month] = {
       Earned: earnedDates,
       Utilized: utilizedDates,
       BalanceEnd: balanceEnd
@@ -170,8 +176,8 @@ async function saveEmployee() {
 
     await update(employeeRef, {
       BalanceStart: existingBalanceStart,
-      BalanceEnd: balanceEnd, // final balance
-      Months: existingMonths
+      BalanceEnd: balanceEnd,
+      Years: existingYears
     });
 
     alert("Employee record saved successfully!");
@@ -204,9 +210,99 @@ function resetForm(newBalanceEnd, currentMonth) {
   const nextIndex = (currentIndex + 1) % months.length; // loops back to January
   monthSelect.value = months[nextIndex];
 }
+//--------YEAR Drop down------
+const yearSelect = document.getElementById("yearSelect");
+
+function populateYearDropdown() {
+  const currentYear = new Date().getFullYear();
+  for (let year = 2000; year <= currentYear; year++) {
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent = year;
+    yearSelect.appendChild(option);
+  }
+
+  // Optional: set current year as selected
+  yearSelect.value = currentYear;
+}
+
+populateYearDropdown();
+
+
 
 // Expose functions to window for inline HTML calls
 window.addEarnedDate = addEarnedDate;
 window.addUtilizedDate = addUtilizedDate;
 window.saveEmployee = saveEmployee;
 window.closeModal = closeModal;
+
+// -------------------------------
+// CHANGE PASSWORD FUNCTIONALITY (Firebase Auth)
+// -------------------------------
+const auth = getAuth();
+
+// Open modal
+changePassBtn.addEventListener("click", () => {
+    changePassModal.classList.remove("hidden");
+});
+
+// Close modal
+cancelChangePass.addEventListener("click", () => {
+    changePassModal.classList.add("hidden");
+    changePassForm.reset();
+});
+
+// Toggle password visibility
+document.querySelectorAll(".toggle-password").forEach(icon => {
+    icon.addEventListener("click", () => {
+        const input = icon.previousElementSibling;
+        if (input.type === "password") {
+            input.type = "text";
+            icon.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+            input.type = "password";
+            icon.classList.replace("fa-eye-slash", "fa-eye");
+        }
+    });
+});
+
+// Handle form submit
+changePassForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const currentPass = document.getElementById("currentPass").value;
+    const newPass = document.getElementById("newPass").value;
+    const confirmPass = document.getElementById("confirmPass").value;
+
+    if (newPass !== confirmPass) {
+        alert("New password and confirm password do not match!");
+        return;
+    }
+
+    // Custom confirmation modal
+    const confirmed = confirm("Are you sure you want to change your password?");
+    if (!confirmed) return;
+
+    try {
+        const user = auth.currentUser;
+        if (!user) throw new Error("No user is currently signed in.");
+
+        // Re-authenticate
+        const credential = EmailAuthProvider.credential(user.email, currentPass);
+        await reauthenticateWithCredential(user, credential);
+
+        // Update password
+        await updatePassword(user, newPass);
+
+        alert("Password successfully updated!");
+        changePassModal.classList.add("hidden");
+        changePassForm.reset();
+    } catch (error) {
+        console.error("Error changing password:", error);
+        if (error.code === "auth/wrong-password") {
+            alert("Current password is incorrect!");
+        } else {
+            alert("Failed to change password: " + error.message);
+        }
+    }
+});

@@ -14,23 +14,29 @@
 <body>
 
 <div class="sidebar">
-    <img src="resources/images/nfa_logo.png" alt="nfa_logo" class="logo-side">
-    <div class="sidebar-item active" data-page="dashboard.html">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-    </div>
-    <div class="sidebar-item" data-page="employees.html">
-        <i class="fa-solid fa-users"></i>
-        <span>Employees</span>
-    </div>
-    <div class="sidebar-item" data-page="reports.html">
-        <i class="fa-solid fa-chart-line"></i>
-        <span>Reports</span>
-    </div>
-    <div class="sidebar-item" data-page="settings.html">
-        <i class="fa-solid fa-gear"></i>
-        <span>Settings</span>
-    </div>
+  <img src="resources/images/nfa_logo.png" alt="nfa_logo" class="logo-side">
+  <div class="sidebar-item active" data-page="dashboard.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+  </div>
+  <div class="sidebar-item" data-page="employees.html">
+      <i class="fa-solid fa-users"></i>
+      <span>Employees</span>
+  </div>
+
+     <div class="sidebar-item" id="settingsItem">
+      <i class="fa-solid fa-gear"></i>
+      <span>Settings <i class="fa-solid fa-chevron-down dropdown-icon"></i></span>
+      <div class="dropdown">
+          <div class="dropdown-item" id="changePassBtn">
+              <i class="fa-solid fa-key"></i> Change Password
+          </div>
+          <div class="dropdown-item" id="logoutBtn">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </div>
+      </div>
+  </div>
+
 </div>
 
   <!-- Main content -->
@@ -43,54 +49,64 @@
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
     </div>
+      <div class="table-actions">
+        <div class="year-dropdown-container">
+          <select id="yearSelect" class="year-dropdown"></select>
+        </div>
+
+        <button id="addCtoBtn" class="add-btn">
+          <i class="fa-solid fa-user-plus"></i> Add Employee's CTO
+        </button>
+      </div>
 
     <!-- Employee Info Card -->
       <div class="table-wrapper">
 
-          <div class="table-actions">
-            <button id="addCtoBtn" class="add-btn">
-              <i class="fa-solid fa-user-plus"></i> Add Employee's CTO 
-            </button>
-          </div>
+          
 
     <table class="employee-table">
 
       <thead>
-        <tr>
+        <tr id="monthHeaderRow">
           <th rowspan="2">No.</th>
           <th rowspan="2">Name</th>
 
-          <th colspan="3">January</th>
-          <th colspan="3">February</th>
-          <th colspan="3">March</th>
-          <th colspan="3">April</th>
-          <th colspan="3">May</th>
-          <th colspan="3">June</th>
-          <th colspan="3">July</th>
-          <th colspan="3">August</th>
-          <th colspan="3">September</th>
-          <th colspan="3">October</th>
-          <th colspan="3">November</th>
-          <th colspan="3">December</th>
+          <th colspan="3" class="month-header">June</th>
+          <th colspan="3" class="month-header">July</th>
+          <th colspan="3" class="month-header">August</th>
+          <th colspan="3" class="month-header">September</th>
+          <th colspan="3" class="month-header">October</th>
+          <th colspan="3" class="month-header">November</th>
+          <th colspan="3" class="month-header">December</th>
+          <th colspan="3" class="month-header">January</th>
+          <th colspan="3" class="month-header">February</th>
+          <th colspan="3" class="month-header">March</th>
+          <th colspan="3" class="month-header">April</th>
+          <th colspan="3" class="month-header">May</th>
+          <th colspan="3" class="month-header">June</th>
 
           <th rowspan="2" style="color: white;">Total Balance End</th>
         </tr>
 
+
         <tr>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th>Earned</th><th>Balance End</th>
-          <th>Utilized</th><th style="color: white;">Earned</th><th style="color: white;">Balance End</th>
+          <!-- repeated subheaders -->
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th>Balance</th>
+          <th>Utilized</th><th>Earned</th><th style="color: white;">Balance</th>
         </tr>
       </thead>
+
 
       <tbody>
         <tr>
@@ -116,12 +132,13 @@
 
     </table>
     </div>
-    <!-- <div class="export-btn-container">
-    <button id="export-btn">Export to File</button>
-    </div> -->
+    <div class="modal-footer">
+      <button id="exportAllEmpExcelBtn" class="export-btn">
+        <i class="fa-solid fa-file-excel"></i> Export CTO Report - Excel
+      </button>
 
+    </div>
 
- <!-- Add Employee Modal -->
   <!-- Add Employee Modal -->
 <div id="employeeModal" class="modal">
   <div class="modal-card">
@@ -138,21 +155,13 @@
     <h4>Balance (Start)</h4>
     <input type="number" id="balanceStart">
 
-    <h4>Month</h4>
-    <select id="monthSelect">
-      <option>January</option>
-      <option>February</option>
-      <option>March</option>
-      <option>April</option>
-      <option>May</option>
-      <option>June</option>
-      <option>July</option>
-      <option>August</option>
-      <option>September</option>
-      <option>October</option>
-      <option>November</option>
-      <option>December</option>
-    </select>
+    <h4>Month / Year</h4>
+      <div style="display: flex; gap: 10px; align-items: center;">
+      <select id="monthSelect"></select>
+      <input type="number" id="yearInput" min="2000" max="2100" style="width: 100px;" placeholder="Year">
+    </div>
+
+
 
     <!-- Earned Section -->
     <div class="section">
@@ -215,22 +224,107 @@
           <th>Earned Date</th>
           <th>Utilized (Hrs)</th>
           <th>Utilized Date</th>
-          <th>Balance End</th>
+          <th style="color: white;">Balance End</th>
         </tr>
       </thead>
       <tbody id="empDetailsTableBody"></tbody>
     </table>
 
+    <div class="modal-footer">
+      <button id="exportEmpPdfBtn" class="export-btn">
+        <i class="fa-solid fa-file-pdf"></i> Export PDF
+      </button>
+    </div>
+
   </div>
 </div>
+<div class="modal-overlay hidden" id="logoutModal">
+  <div class="modal">
+    <h3>Confirm Logout</h3>
+    <p>Are you sure you want to log out?</p>
 
+    <div class="modal-actions">
+      <button class="btn-cancel" id="cancelLogout">Cancel</button>
+      <button class="btn-logout" id="confirmLogout">Logout</button>
+    </div>
+  </div>
+</div>
+<div class="modal-overlay hidden" id="changePassModal">
+  <div class="modal">
+    <h3>Change Password</h3>
+    <form id="changePassForm">
+
+      <label for="currentPass">Current Password</label>
+      <div class="password-field">
+        <input type="password" id="currentPass" required>
+        <i class="fa-solid fa-eye toggle-password"></i>
+      </div>
+
+      <label for="newPass">New Password</label>
+      <div class="password-field">
+        <input type="password" id="newPass" required>
+        <i class="fa-solid fa-eye toggle-password"></i>
+      </div>
+
+      <label for="confirmPass">Confirm New Password</label>
+      <div class="password-field">
+        <input type="password" id="confirmPass" required>
+        <i class="fa-solid fa-eye toggle-password"></i>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" id="cancelChangePass">Cancel</button>
+        <button type="submit" class="btn-save">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
     
 <script type="module" src="js/employees-display.js"></script>
 <script type="module" src="js/employees.js"></script>
+<script type="module" src="js/reports-export.js"></script>
+<script type="module" src="js/export-excelAllCTO.js"></script>
+<script type="module" src="js/login-auth.js"></script>
+
+<!-- <script type="module" src="js/dashboard.js"></script> -->
+
 <script src="js/navigation.js"></script>
 <script src="js/reports-export.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const sidebarItems = document.querySelectorAll('.sidebar-item');
+
+  sidebarItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // If logout button clicked, open modal
+      if(item.id === 'logoutBtn') return;
+
+      sidebarItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+
+      const page = item.getAttribute('data-page');
+      window.location.href = page;
+    });
+  });
+
+  const logoutBtn = document.getElementById('logoutBtn');
+  const modal = document.getElementById('logoutModal');
+  const cancelBtn = document.getElementById('cancelLogout');
+  const confirmBtn = document.getElementById('confirmLogout');
+
+  logoutBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+  cancelBtn.addEventListener('click', () => modal.classList.add('hidden'));
+  confirmBtn.addEventListener('click', async () => {
+    modal.classList.add('hidden');
+    await logout();
+  });
+});
+
+</script>
 
 </body>
 </html>

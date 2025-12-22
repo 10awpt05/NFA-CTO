@@ -136,7 +136,7 @@ input {
   position: relative;
 }
 
-.password-group input {
+.password-group input { 
   width: 100%;
   padding-right: 40px;
 }

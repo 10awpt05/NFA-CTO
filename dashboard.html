@@ -8,29 +8,68 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/sidebar.css">
+    <!-- <link rel="stylesheet" href="css/sidebar.css"> -->
 </head>
 <body>
 
 <div class="sidebar">
-    <img src="resources/images/nfa_logo.png" alt="nfa_logo" class="logo-side">
-    <div class="sidebar-item active" data-page="dashboard.html">
-        <i class="fa-solid fa-house"></i>
-        <span>Home</span>
-    </div>
-    <div class="sidebar-item" data-page="employees.html">
-        <i class="fa-solid fa-users"></i>
-        <span>Employees</span>
-    </div>
-    <div class="sidebar-item" data-page="reports.html">
-        <i class="fa-solid fa-chart-line"></i>
-        <span>Reports</span>
-    </div>
-    <div class="sidebar-item" data-page="settings.html">
-        <i class="fa-solid fa-gear"></i>
-        <span>Settings</span>
-    </div>
+  <img src="resources/images/nfa_logo.png" alt="nfa_logo" class="logo-side">
+  <div class="sidebar-item active" data-page="dashboard.html">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+  </div>
+  <div class="sidebar-item" data-page="employees.html">
+      <i class="fa-solid fa-users"></i>
+      <span>Employees</span>
+  </div>
+
+     <div class="sidebar-item" id="settingsItem">
+      <i class="fa-solid fa-gear"></i>
+      <span>Settings <i class="fa-solid fa-chevron-down dropdown-icon"></i></span>
+      <div class="dropdown">
+          <div class="dropdown-item" id="changePassBtn">
+              <i class="fa-solid fa-key"></i> Change Password
+          </div>
+          <div class="dropdown-item" id="logoutBtn">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+          </div>
+      </div>
+  </div>
+
 </div>
+
+<!-- Change Password Modal -->  
+<div class="modal-overlay hidden" id="changePassModal">
+  <div class="modal">
+    <h3>Change Password</h3>
+    <form id="changePassForm">
+
+      <label for="currentPass">Current Password</label>
+      <div class="password-field">
+        <input type="password" id="currentPass" required>
+        <i class="fa-solid fa-eye toggle-password"></i>
+      </div>
+
+      <label for="newPass">New Password</label>
+      <div class="password-field">
+        <input type="password" id="newPass" required>
+        <i class="fa-solid fa-eye toggle-password"></i>
+      </div>
+
+      <label for="confirmPass">Confirm New Password</label>
+      <div class="password-field">
+        <input type="password" id="confirmPass" required>
+        <i class="fa-solid fa-eye toggle-password"></i>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" id="cancelChangePass">Cancel</button>
+        <button type="submit" class="btn-save">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
 
 
@@ -85,20 +124,34 @@
   <!-- CHARTS -->
 <div class="charts">
   <div class="chart-box">
-    <h4 style="color: white;">Utilized Hour Comparison</h4>
+    <h4 style="color: white;">Utilized Hour Comparison of all Employees</h4>
     <canvas id="utilizedChart" width="400" height="200"></canvas>
   </div>
   <div class="chart-box">
-    <h4 style="color: white;">Earned Hour Comparison</h4>
+    <h4 style="color: white;">Earned Hour Comparison of all Employees</h4>
     <canvas id="earnedChart" width="400" height="200"></canvas>
   </div>
 </div>
 
+<div class="modal-overlay hidden" id="logoutModal">
+  <div class="modal">
+    <h3>Confirm Logout</h3>
+    <p>Are you sure you want to log out?</p>
 
-<script type="module" src="js/dashboard.js"></script>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="cancelLogout">Cancel</button>
+      <button class="btn-logout" id="confirmLogout">Logout</button>
+    </div>
+  </div>
+</div>
+
 <script type="module" src="js/dashboard.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="js/calendar.js"></script>
 <script src="js/navigation.js"></script>
+
+<script type="module" src="js/login-auth.js"></script>
+
+
 </body>
 </html>
