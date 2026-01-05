@@ -798,81 +798,235 @@ tbody tr:nth-child(even) {
   width: 100%;
 }
 
-#logoutModal {
-  display: none; /* hidden initially */
+/* =========================
+   LOGOUT MODAL (MATCH IMAGE)
+========================= */
+
+.logout-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.45);
+  display: none;
   justify-content: center;
   align-items: center;
   z-index: 10000;
 }
 
-#logoutModal .modal {
-  background: white;
-  padding: 20px 25px;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 90%;
+.logout-card {
+  background: #fff;
+  width: 380px;
+  padding: 28px 26px;
+  border-radius: 16px;
   text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  font-family: 'Poppins', sans-serif;
 }
 
-#logoutModal h3 {
-  margin-bottom: 10px;
+.logout-card h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 600;
   color: #1e40af;
 }
 
-#logoutModal p {
-  margin-bottom: 20px;
+.logout-card p {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: #64748b;
 }
 
-#logoutModal .modal-actions {
+.logout-actions {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  gap: 12px;
 }
 
-#logoutModal .btn-cancel {
+.logout-actions button {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+/* Cancel button */
+.logout-actions .btn-cancel {
   background: #e5e7eb;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
+  color: #000;
 }
 
-#logoutModal .btn-logout {
-  background: #dc2626;
-  color: white;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-#logoutModal .btn-cancel:hover {
+.logout-actions .btn-cancel:hover {
   background: #d1d5db;
 }
 
-#logoutModal .btn-logout:hover {
+/* Logout button */
+.logout-actions .btn-logout {
+  background: #dc2626;
+  color: #fff;
+}
+
+.logout-actions .btn-logout:hover {
   background: #b91c1c;
 }
-/* Hide elements with hidden class */
-.hidden {
-  display: none !important;
-}
-#logoutModal {
+
+
+/* ===============================
+   CHANGE PASSWORD MODAL (SAFE)
+================================ */
+/* Overlay */
+.cp-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.45);
-  justify-content: center;
+  display: flex;
   align-items: center;
-  display: none; /* hidden by default */
+  justify-content: center;
   z-index: 10000;
 }
 
-#logoutModal .modal-card {
+.hidden {
+  display: none;
+}
+
+/* Card */
+.cp-card {
+  width: 420px;
   background: #fff;
-  padding: 25px 30px;
-  border-radius: 12px;
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+  font-family: "Poppins", sans-serif;
+}
+
+/* Title */
+.cp-card h2 {
   text-align: center;
+  color: #1f3bb3;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+/* Groups */
+.cp-group {
+  margin-bottom: 18px;
+}
+
+.cp-group label {
+  display: block;
+  font-size: 14px;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+/* Input wrapper */
+.cp-input {
+  position: relative;
+}
+
+.cp-input input {
+  width: 100%;
+  padding: 12px 44px 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid #cbd5e1;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+/* Focus (yellow highlight like image) */
+#currentPass:focus {
+  background: #fffccf;
+  border-color: #eab308;
+}
+
+/* Eye icon */
+.cp-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #64748b;
+}
+
+/* Buttons */
+.cp-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.cp-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Cancel */
+#cancelChangePass {
+  background: #e5e7eb;
+  color: #000;
+}
+
+/* Save */
+.cp-actions button[type="submit"] {
+  background: #1f3bb3;
+  color: #fff;
+}
+
+
+/* Wrapper for better styling */
+.year-dropdown-wrapper {
+  position: relative;
+  width: 200px;       /* Adjust width as needed */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Hide default arrow */
+.year-dropdown {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: white;
+  color: #000000;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Hover and focus effect */
+.year-dropdown:hover, 
+.year-dropdown:focus {
+  border-color: #0008ff;
+  box-shadow: 0 0 10px rgba(54,162,235,0.5);
+  outline: none;
+}
+
+/* Custom arrow using a pseudo-element */
+.year-dropdown-wrapper::after {
+  content: "▾";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+  color: #fff;
+}
+
+/* Optional: smooth dropdown options */
+.year-dropdown option {
+  background: #787878;
+  color: #fff;
+  padding: 10px;
 }

@@ -2,6 +2,14 @@
 import { database } from "./firebase.js";
 import { ref, set, get, update, push } 
   from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+  
+import {
+  getAuth,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  updatePassword
+} from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
 
 // =======================
 // Employee Modal Logic
@@ -200,27 +208,6 @@ window.addUtilizedDate = addUtilizedDate;
 window.saveEmployee = saveEmployee;
 // window.closeModal = closeModal;
 
-// =======================
-// Change Password Modal Logic
-// =======================
-const cpModal = document.getElementById('cpModal');
-const cpTrigger = document.getElementById('cPass'); // dropdown item
-// const cpClose = cpModal.querySelector('.close');
-const cpCancel = cpModal.querySelector('.cancelBtn');
-
-// Open modal
-cpTrigger.addEventListener('click', () => { cpModal.style.display = 'flex'; });
-
-// Close modal on X
-// cpClose.addEventListener('click', () => { cpModal.style.display = 'none'; });
-
-// Close modal on Cancel
-cpCancel.addEventListener('click', () => { cpModal.style.display = 'none'; });
-
-// Close modal when clicking outside
-window.addEventListener('click', (e) => {
-  if (e.target === cpModal) cpModal.style.display = 'none';
-});
 
 // --------------------EmpName Suggestion Logic--------------------
 // =======================
@@ -366,13 +353,82 @@ cancelLogout.addEventListener("click", () => {
 
 // Confirm logout
 confirmLogout.addEventListener("click", () => {
-  // Clear auth/session if needed
   window.location.href = "index.html";
 });
 
-// Close modal if clicking outside the modal card
+// Close modal when clicking outside
 logoutModal.addEventListener("click", (e) => {
   if (e.target === logoutModal) {
     logoutModal.style.display = "none";
+  }
+});
+
+
+//===============================================
+// Change Password Logic
+//========================================
+const auth = getAuth();
+const changePassBtn = document.getElementById("cPass");
+const changePassModal = document.getElementById("changePassModal");
+const cancelChangePass = document.getElementById("cancelChangePass");
+const changePassForm = document.getElementById("changePassForm");
+
+// Open modal
+changePassBtn.addEventListener("click", () => {
+  changePassModal.classList.remove("hidden");
+});
+
+// Close modal
+cancelChangePass.addEventListener("click", () => {
+  changePassModal.classList.add("hidden");
+  changePassForm.reset();
+});
+
+// Toggle password visibility
+changePassModal.querySelectorAll(".cp-toggle").forEach(icon => {
+  icon.addEventListener("click", () => {
+    const input = icon.previousElementSibling;
+    const isHidden = input.type === "password";
+    input.type = isHidden ? "text" : "password";
+    icon.classList.toggle("fa-eye");
+    icon.classList.toggle("fa-eye-slash");
+  });
+});
+
+// Handle form submit
+changePassForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const currentPass = document.getElementById("currentPass").value;
+  const newPass = document.getElementById("newPass").value;
+  const confirmPass = document.getElementById("confirmPass").value;
+
+  if (newPass !== confirmPass) {
+      alert("New password and confirm password do not match!");
+      return;
+  }
+
+  const confirmed = confirm("Are you sure you want to change your password?");
+  if (!confirmed) return;
+
+  try {
+      const user = auth.currentUser;
+      if (!user) throw new Error("No user is currently signed in.");
+
+      const credential = EmailAuthProvider.credential(user.email, currentPass);
+      await reauthenticateWithCredential(user, credential);
+
+      await updatePassword(user, newPass);
+
+      alert("Password successfully updated!");
+      changePassModal.classList.add("hidden");
+      changePassForm.reset();
+  } catch (error) {
+      console.error("Error changing password:", error);
+      if (error.code === "auth/wrong-password") {
+          alert("Current password is incorrect!");
+      } else {
+          alert("Failed to change password: " + error.message);
+      }
   }
 });

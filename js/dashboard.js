@@ -21,6 +21,8 @@ const changePassModal = document.getElementById("changePassModal");
 const cancelChangePass = document.getElementById("cancelChangePass");
 const changePassForm = document.getElementById("changePassForm");
 
+const yearSelect = document.getElementById("yearSelect");
+
 // -------------------------------
 // CHARTS
 // -------------------------------
@@ -45,11 +47,11 @@ let earnedChart = new Chart(earnedChartCtx, {
 });
 
 // -------------------------------
-// LISTEN DASHBOARD DATA
+// DASHBOARD DATA
 // -------------------------------
-function listenDashboard() {
+function listenDashboard(selectedYear) {
     const employeesRef = ref(database, "employees/CTO");
-    const currentYear = new Date().getFullYear().toString();
+    const year = selectedYear || new Date().getFullYear().toString();
 
     onValue(employeesRef, snapshot => {
         if (!snapshot.exists()) return;
@@ -60,11 +62,10 @@ function listenDashboard() {
         snapshot.forEach(empSnap => {
             totalEmployees++;
             const emp = empSnap.val();
-            const yearData = emp.Years?.[currentYear] || {};
+            const yearData = emp.Years?.[year] || {};
 
             let empEarned = 0, empUtilized = 0;
 
-            // Loop through months
             Object.values(yearData).forEach(month => {
                 (month.Earned || []).forEach(e => { empEarned += Number(e.Hours || 0); });
                 (month.Utilized || []).forEach(u => { empUtilized += Number(u.Hours || 0); });
@@ -79,13 +80,11 @@ function listenDashboard() {
             utilizedData.push(empUtilized.toFixed(2));
         });
 
-        // Update stats
         totalEmpEl.textContent = totalEmployees;
         earnedHrsEl.textContent = totalEarned.toFixed(2);
         utilizedHrsEl.textContent = totalUtilized.toFixed(2);
         balanceEndEl.textContent = totalBalanceEnd.toFixed(2);
 
-        // Update charts
         earnedChart.data.labels = labels;
         earnedChart.data.datasets[0].data = earnedData;
         earnedChart.update();
@@ -96,25 +95,60 @@ function listenDashboard() {
     });
 }
 
-listenDashboard();
+async function populateYearDropdownFromRecords() {
+    const employeesRef = ref(database, "employees/CTO");
+
+    // Keep a Set of all years that exist across employees
+    const yearsSet = new Set();
+
+    // Always include current year
+    const currentYear = new Date().getFullYear();
+    yearsSet.add(currentYear.toString());
+
+    onValue(employeesRef, snapshot => {
+        if (!snapshot.exists()) return;
+
+        // Clear existing options
+        yearSelect.innerHTML = "";
+
+        snapshot.forEach(empSnap => {
+            const emp = empSnap.val();
+            const years = emp.Years ? Object.keys(emp.Years) : [];
+            years.forEach(y => yearsSet.add(y));
+        });
+
+        // Sort years descending
+        const sortedYears = Array.from(yearsSet).sort((a, b) => b - a);
+
+        // Add each year as an option
+        sortedYears.forEach(y => {
+            const option = document.createElement("option");
+            option.value = y;
+            option.textContent = y;
+            yearSelect.appendChild(option);
+        });
+
+        // Select current year by default
+        yearSelect.value = currentYear;
+    });
+}
+
+// Listen for year change
+yearSelect.addEventListener("change", () => {
+    listenDashboard(yearSelect.value);
+});
 
 // -------------------------------
 // CHANGE PASSWORD FUNCTIONALITY (Firebase Auth)
 // -------------------------------
 const auth = getAuth();
 
-// Open modal
-changePassBtn.addEventListener("click", () => {
-    changePassModal.classList.remove("hidden");
-});
-
-// Close modal
+changePassBtn.addEventListener("click", () => changePassModal.classList.remove("hidden"));
 cancelChangePass.addEventListener("click", () => {
     changePassModal.classList.add("hidden");
     changePassForm.reset();
 });
 
-// Toggle password visibility
 document.querySelectorAll(".toggle-password").forEach(icon => {
     icon.addEventListener("click", () => {
         const input = icon.previousElementSibling;
@@ -128,7 +162,6 @@ document.querySelectorAll(".toggle-password").forEach(icon => {
     });
 });
 
-// Handle form submit
 changePassForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -141,7 +174,6 @@ changePassForm.addEventListener("submit", async (e) => {
         return;
     }
 
-    // Custom confirmation modal
     const confirmed = confirm("Are you sure you want to change your password?");
     if (!confirmed) return;
 
@@ -149,11 +181,9 @@ changePassForm.addEventListener("submit", async (e) => {
         const user = auth.currentUser;
         if (!user) throw new Error("No user is currently signed in.");
 
-        // Re-authenticate
         const credential = EmailAuthProvider.credential(user.email, currentPass);
         await reauthenticateWithCredential(user, credential);
 
-        // Update password
         await updatePassword(user, newPass);
 
         alert("Password successfully updated!");
@@ -161,10 +191,11 @@ changePassForm.addEventListener("submit", async (e) => {
         changePassForm.reset();
     } catch (error) {
         console.error("Error changing password:", error);
-        if (error.code === "auth/wrong-password") {
-            alert("Current password is incorrect!");
-        } else {
-            alert("Failed to change password: " + error.message);
-        }
+        alert("Failed to change password: " + error.message);
     }
 });
+
+// -------------------------------
+// INITIALIZE
+// -------------------------------
+populateYearDropdownFromRecords();

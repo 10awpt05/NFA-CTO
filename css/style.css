@@ -498,3 +498,67 @@ canvas {
 .password-field .toggle-password:hover {
   color: var(--blue);
 }
+
+
+
+/* Wrapper for better styling */
+.year-dropdown-wrapper {
+  display: flex;             /* Flex layout for label + dropdown */
+  align-items: center;       /* Vertically center */
+  gap: 10px;                 /* Space between label and dropdown */
+  width: 250px;              /* Adjust total width as needed */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Label style */
+.year-label {
+  font-weight: 500;
+  color: #1f2937; /* Dark gray */
+  font-size: 16px;
+  min-width: 50px; /* Ensures label doesn't shrink */
+  text-align: right; 
+}
+
+/* Hide default arrow */
+.year-dropdown {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  padding: 10px 40px 10px 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: white;
+  color: #000000;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Hover and focus effect */
+.year-dropdown:hover, 
+.year-dropdown:focus {
+  border-color: #0008ff;
+  box-shadow: 0 0 10px rgba(54,162,235,0.5);
+  outline: none;
+}
+
+/* Custom arrow using a pseudo-element */
+.year-dropdown-wrapper::after {
+  content: "▾";
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 16px;
+  color: #000000;
+}
+
+/* Optional: smooth dropdown options */
+.year-dropdown option {
+  background: #787878;
+  color: #fff;
+  padding: 10px;
+}
