@@ -84,7 +84,6 @@
           <th colspan="3" class="month-header">March</th>
           <th colspan="3" class="month-header">April</th>
           <th colspan="3" class="month-header">May</th>
-          <th colspan="3" class="month-header">June</th>
 
           <th rowspan="2" style="color: white;">Total Balance End</th>
         </tr>
@@ -92,7 +91,6 @@
 
         <tr>
           <!-- repeated subheaders -->
-          <th>Utilized</th><th>Earned</th><th>Balance</th>
           <th>Utilized</th><th>Earned</th><th>Balance</th>
           <th>Utilized</th><th>Earned</th><th>Balance</th>
           <th>Utilized</th><th>Earned</th><th>Balance</th>
@@ -161,7 +159,8 @@
     <h4>Month / Year</h4>
       <div style="display: flex; gap: 10px; align-items: center;">
       <select id="monthSelect"></select>
-      <input type="number" id="yearInput" min="2000" max="2100" style="width: 100px;" placeholder="Year">
+      <select id="yearInput" style="width: 120px;"></select>
+
     </div>
 
 
@@ -200,7 +199,7 @@
 </div>
 
 
-<!-- -------------------Name Modal-------------------- -->
+<!-- -------------------employee Modal-------------------- -->
 <div id="empDetailsModal" class="modal">
   <div class="modal-card large">
 
@@ -210,38 +209,99 @@
     </div>
 
     <div class="balance-summary">
-      
       <span>Balance as of <strong id="empBalanceDate"></strong></span>
       <span class="balance-value" id="empTotalBalance"></span>
       <span>Balance Start <strong id="empBalanceDate"></strong></span>
       <span class="balance-value" id="empBalanceStart"></span>
-      
     </div>
 
-
-    <table class="details-table">
+    <table class="details-table" id="empDetailsTable">
       <thead>
         <tr>
+          <th>Notes</th>
           <th>Month</th>
           <th>Earned (Hrs)</th>
           <th>Earned Date</th>
           <th>Utilized (Hrs)</th>
           <th>Utilized Date</th>
-          <th style="color: white;">Balance End</th>
+          <th>Balance End</th>
         </tr>
       </thead>
       <tbody id="empDetailsTableBody"></tbody>
     </table>
 
     <div class="modal-footer">
-      <button id="exportEmpPdfBtn" class="export-btn">
-        <i class="fa-solid fa-file-pdf"></i> Export PDF
-      </button>
+      <button id="editEmpBtn" class="edit-btn">✏️ Edit</button>
+      <button id="saveEmpBtn" class="save-btn" style="display:none;">💾 Save</button>
+      <button id="cancelEmpBtn" class="cancel-btn">❌ Cancel</button>
+
+      <select id="exportType">
+        <option value="pdf">PDF</option>
+        <option value="excel">Excel</option>
+        <!-- <option value="word">Word</option> -->
+      </select>
+
+      <button id="exportEmpBtn" class="export-btn">⬇ Export</button>
+    </div>
+
+    <button id="generateCertBtn" class="generate-btn">
+  🏆 Generate Certificate
+  </button>
+
+
+  </div>
+</div>
+
+<!-- Certificate Generator Modal -->
+<div id="certModal" class="modal">
+  <div class="modal-card">
+
+    <div class="modal-header">
+      <h3>Generate Certificate</h3>
+      <!-- <span class="close-btn" onclick="closeCertModal()">×</span> -->
+    </div>
+
+    <label>Acting Branch Manager</label>
+    <input type="text" id="certManager" value="ANDRE BONN M. SUMALPONG">
+
+    <label>Date (Month / Day)</label>
+    <input type="date" id="certDate">
+
+    <label>Month Covered</label>
+    <select id="certMonth">
+      <option value="January">January</option>
+      <option value="February">February</option>
+      <option value="March">March</option>
+      <option value="April">April</option>
+      <option value="May">May</option>
+      <option value="June">June</option>
+      <option value="July">July</option>
+      <option value="August">August</option>
+      <option value="September">September</option>
+      <option value="October">October</option>
+      <option value="November">November</option>
+      <option value="December">December</option>
+    </select>
+
+    <label>Total HRS</label>
+    <input type="number" id="certTotalHrs" readonly>
+
+    <label>Date Issued</label>
+    <input type="date" id="certIssued">
+
+    <label>Valid Until</label>
+    <input type="date" id="certValid">
+
+    <div class="modal-actions">
+      <button id="genBtn" onclick="generateCertificatePDF()">Generate</button>
+      <button class="cancel" onclick="cancelCertificate()">Cancel</button>
+
     </div>
 
   </div>
 </div>
 
+<!-- Change Password Modal -->
 <div id="changePassModal" class="cp-overlay hidden">
   <div class="cp-card">
     <h2>Change Password</h2>
@@ -296,17 +356,29 @@
   </div>
 </div>
 
+<!-- Libraries first -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.min.js"></script>
+
+<!-- Your custom non-module scripts that use the libraries -->
+<script src="js/exporter.js"></script>
+
+<!-- Then your module scripts -->
 <script type="module" src="js/employees-display.js"></script>
 <script type="module" src="js/employees.js"></script>
 <script type="module" src="js/reports-export.js"></script>
 <script type="module" src="js/export-excelAllCTO.js"></script>
-
-<script src="js/navigation.js"></script>
-<!-- <script type="module" src="js/dashboard.js"></script> -->
 <script type="module" src="js/login-auth.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+<script src="js/certificate.js"></script>
+
+<!-- Other scripts -->
+<script src="js/navigation.js"></script>
+
+
+
 
 </body>
 </html>

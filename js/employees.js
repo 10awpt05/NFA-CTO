@@ -114,16 +114,19 @@ document.getElementById("utilizedHours").addEventListener("input", calculateBala
 // Save Employee record to Firebase
 async function saveEmployee() {
   const name = document.getElementById("empName").value.trim();
+  if (!name) return alert("Employee name required");
+
+  const month = monthSelect.value;
+  const fiscalYear = yearInput.value;   // ✅ CORRECT
+  if (!fiscalYear) return alert("Please select a fiscal year");
+
   const balanceStart = Number(document.getElementById("balanceStart").value) || 0;
-  const month = document.getElementById("monthSelect").value;
-  const year = document.getElementById("yearSelect").value;
   const earnedHours = Number(document.getElementById("earnedHours").value) || 0;
   const utilizedHours = Number(document.getElementById("utilizedHours").value) || 0;
   let balanceEnd = balanceStart + earnedHours - utilizedHours;
   balanceEnd = Number(balanceEnd.toFixed(3));
 
-  if (!name) { alert("Employee name required"); return; }
-
+  // Build earned/utilized arrays
   const earnedDates = [...document.querySelectorAll("#earnedDates .entry")]
     .map(e => ({ Date: e.querySelector("input")?.value || "", Hours: earnedHours }))
     .filter(e => e.Date);
@@ -151,8 +154,8 @@ async function saveEmployee() {
       existingBalanceStart = data.BalanceStart ?? balanceStart;
     }
 
-    if (!existingYears[year]) existingYears[year] = {};
-    existingYears[year][month] = {
+    if (!existingYears[fiscalYear]) existingYears[fiscalYear] = {};
+    existingYears[fiscalYear][month] = {
       Earned: earnedDates,
       Utilized: utilizedDates,
       BalanceEnd: balanceEnd
@@ -164,13 +167,16 @@ async function saveEmployee() {
       Years: existingYears
     });
 
-    alert("Employee record saved successfully!");
+    alert(`Employee record saved successfully for Fiscal Year ${fiscalYear}`);
     resetForm(balanceEnd, month);
+
   } catch (error) {
     console.error("Firebase save error:", error);
     alert("Failed to save to Firebase");
   }
 }
+
+
 
 // Reset form after saving
 function resetForm(newBalanceEnd, currentMonth) {
@@ -181,26 +187,53 @@ function resetForm(newBalanceEnd, currentMonth) {
   document.getElementById("earnedDates").innerHTML = "";
   document.getElementById("utilizedDates").innerHTML = "";
 
-  const monthSelect = document.getElementById("monthSelect");
-  const months = Array.from(monthSelect.options).map(opt => opt.value);
+  const monthSelectEl = document.getElementById("monthSelect");
+  const months = Array.from(monthSelectEl.options).map(opt => opt.value);
   const currentIndex = months.indexOf(currentMonth);
   const nextIndex = (currentIndex + 1) % months.length;
-  monthSelect.value = months[nextIndex];
+  monthSelectEl.value = months[nextIndex];
+}
+
+
+function getFiscalYear(month, selectedYear) {
+  // selectedYear = first year of fiscal dropdown (e.g., "2026-2027" → 2026)
+  const baseYear = Number(selectedYear.split("-")[0]);
+  const secondHalf = ["January","February","March","April","May"];
+
+  if (secondHalf.includes(month)) {
+    // Jan–May → previous fiscal year
+    return `${baseYear - 1}-${baseYear}`;
+  } else {
+    // June–Dec → current fiscal year
+    return `${baseYear}-${baseYear + 1}`;
+  }
 }
 
 // Populate Year dropdown
 const yearSelect = document.getElementById("yearSelect");
 function populateYearDropdown() {
-  const currentYear = new Date().getFullYear();
-  for (let year = 2000; year <= currentYear; year++) {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const month = now.getMonth(); // 0 = Jan
+  const startYear = month >= 5 ? currentYear : currentYear - 1; // June-based fiscal year
+
+  yearSelect.innerHTML = "";
+  for (let i = 0; i < 2; i++) { // current and next fiscal year
+    const yStart = startYear + i;
+    const yEnd = yStart + 1;
     const option = document.createElement("option");
-    option.value = year;
-    option.textContent = year;
+    option.value = `${yStart}-${yEnd}`;
+    option.textContent = `${yStart}-${yEnd}`;
     yearSelect.appendChild(option);
   }
-  yearSelect.value = currentYear;
-} 
+
+  yearSelect.value = `${startYear}-${startYear + 1}`;
+}
 populateYearDropdown();
+
+
+
+// populateYearDropdown();
 
 // Expose functions to window
 window.addEarnedDate = addEarnedDate;
@@ -260,10 +293,8 @@ empNameInput.addEventListener("input", () => {
 
       // Get selected month and year
       const selectedMonth = monthSelect.value; // e.g., "January"
-      const baseYear = Number(yearSelect.value);
-      const selectedYear = ["January","February","March","April","May"].includes(selectedMonth)
-        ? baseYear + 1
-        : baseYear;
+     const fiscalYear = yearSelect.value; // "2025-2026"
+
 
       // Load employee data from Firebase
       const snapshot = await get(ref(database, `employees/CTO/${name}`));
@@ -279,7 +310,8 @@ empNameInput.addEventListener("input", () => {
       document.getElementById("utilizedDates").innerHTML = "";
 
       // Load data for selected month/year
-      const monthData = data.Years?.[selectedYear]?.[selectedMonth];
+      const monthData = data.Years?.[fiscalYear]?.[selectedMonth];
+
       if (monthData?.Earned) {
         monthData.Earned.forEach(e => {
           addEarnedDate();

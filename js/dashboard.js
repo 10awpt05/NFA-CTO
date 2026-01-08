@@ -35,92 +35,220 @@ gradientEarned.addColorStop(0, 'rgba(54,162,235,0.4)');
 gradientEarned.addColorStop(1, 'rgba(54,162,235,0)');
 
 let utilizedChart = new Chart(utilizedChartCtx, {
-    type: 'line',
-    data: { labels: [], datasets: [{ data: [], backgroundColor: gradientUtilized, borderColor: 'rgba(255,99,132,1)', fill: true, tension: 0.4, pointBackgroundColor: '#fff', pointRadius: 5, pointHoverRadius: 7 }] },
-    options: { responsive: true, plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#fff' } }, y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#fff' } } } }
+    type: 'bar',
+    data: {
+        labels: [],
+        datasets: [
+            {
+                label: "Earned Hours",
+                data: [],
+                backgroundColor: 'rgba(54,162,235,0.7)'
+            },
+            {
+                label: "Utilized Hours",
+                data: [],
+                backgroundColor: 'rgba(255,99,132,0.7)'
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true },
+            tooltip: {
+                callbacks: {
+                    label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} hrs`
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: { color: '#fff' },
+                grid: { color: 'rgba(255,255,255,0.1)' }
+            },
+            y: {
+                ticks: { color: '#fff' },
+                grid: { color: 'rgba(255,255,255,0.1)' }
+            }
+        }
+    }
 });
+
 
 let earnedChart = new Chart(earnedChartCtx, {
     type: 'line',
-    data: { labels: [], datasets: [{ data: [], backgroundColor: gradientEarned, borderColor: 'rgba(54,162,235,1)', fill: true, tension: 0.4, pointBackgroundColor: '#fff', pointRadius: 5, pointHoverRadius: 7 }] },
-    options: { responsive: true, plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#fff' } }, y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#fff' } } } }
+    data: {
+        labels: [],
+        datasets: [
+            {
+                label: "Earned Hours",
+                data: [],
+                borderColor: 'rgba(54,162,235,1)',
+                backgroundColor: 'rgba(54,162,235,0.3)',
+                fill: true,
+                tension: 0.4
+            },
+            {
+                label: "Utilized Hours",
+                data: [],
+                borderColor: 'rgba(255,99,132,1)',
+                backgroundColor: 'rgba(255,99,132,0.3)',
+                fill: true,
+                tension: 0.4
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true },
+            tooltip: {
+                callbacks: {
+                    title: (items) => `Month: ${items[0].label}`,
+                    label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} hrs`
+                }
+            }
+        },
+        scales: {
+            x: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } },
+            y: { ticks: { color: '#fff' }, grid: { color: 'rgba(255,255,255,0.1)' } }
+        }
+    }
 });
 
 // -------------------------------
 // DASHBOARD DATA
 // -------------------------------
-function listenDashboard(selectedYear) {
+function listenDashboard(fiscalYear) {
     const employeesRef = ref(database, "employees/CTO");
-    const year = selectedYear || new Date().getFullYear().toString();
 
     onValue(employeesRef, snapshot => {
         if (!snapshot.exists()) return;
 
-        let totalEmployees = 0, totalEarned = 0, totalUtilized = 0, totalBalanceEnd = 0;
-        const labels = [], earnedData = [], utilizedData = [];
+        let totalEmployees = 0;
+        let totalEarned = 0;
+        let totalUtilized = 0;
+        let totalBalanceEnd = 0;
+
+        const employeeLabels = [];
+        const employeeEarnedData = [];
+        const employeeUtilizedData = [];
+
+        const fiscalMonths = [
+            "June", "July", "August", "September", "October", "November",
+            "December", "January", "February", "March", "April", "May"
+        ];
+
+        const monthIndexMap = {
+            June: 0, July: 1, August: 2, September: 3, October: 4, November: 5,
+            December: 6, January: 7, February: 8, March: 9, April: 10, May: 11
+        };
+
+
+        const earnedByMonth = Array(12).fill(0);
+        const utilizedByMonth = Array(12).fill(0);
+
 
         snapshot.forEach(empSnap => {
             totalEmployees++;
+
             const emp = empSnap.val();
-            const yearData = emp.Years?.[year] || {};
+            const empName = empSnap.key;
+            const yearData = emp.Years?.[fiscalYear];
 
-            let empEarned = 0, empUtilized = 0;
+            let empEarned = 0;
+            let empUtilized = 0;
 
-            Object.values(yearData).forEach(month => {
-                (month.Earned || []).forEach(e => { empEarned += Number(e.Hours || 0); });
-                (month.Utilized || []).forEach(u => { empUtilized += Number(u.Hours || 0); });
+            if (yearData) {
+                Object.entries(yearData).forEach(([monthName, monthData]) => {
+                const monthIndex = monthIndexMap[monthName];
+                if (monthIndex === undefined) return;
+
+                // ---- EARNED ----
+                if (Array.isArray(monthData.Earned)) {
+                    monthData.Earned.forEach(e => {
+                        const hrs = Number(e.Hours || 0);
+                        empEarned += hrs;
+                        earnedByMonth[monthIndex] += hrs;
+                        totalEarned += hrs;
+                    });
+                }
+
+                // ---- UTILIZED ----
+                if (Array.isArray(monthData.Utilized)) {
+                    monthData.Utilized.forEach(u => {
+                        const hrs = Number(u.Hours || 0);
+                        empUtilized += hrs;
+                        utilizedByMonth[monthIndex] += hrs;
+                        totalUtilized += hrs;
+                    });
+                }
             });
 
-            totalEarned += empEarned;
-            totalUtilized += empUtilized;
+            }
+
             totalBalanceEnd += Number(emp.BalanceEnd || 0);
 
-            labels.push(empSnap.key); // employee name
-            earnedData.push(empEarned.toFixed(2));
-            utilizedData.push(empUtilized.toFixed(2));
+            // ---- PER EMPLOYEE DATA ----
+            employeeLabels.push(empName);
+            employeeEarnedData.push(empEarned);
+            employeeUtilizedData.push(empUtilized);
         });
 
+        // ---- UPDATE CARDS ----
         totalEmpEl.textContent = totalEmployees;
-        earnedHrsEl.textContent = totalEarned.toFixed(2);
-        utilizedHrsEl.textContent = totalUtilized.toFixed(2);
-        balanceEndEl.textContent = totalBalanceEnd.toFixed(2);
+        earnedHrsEl.textContent = totalEarned.toFixed(3);
+        utilizedHrsEl.textContent = totalUtilized.toFixed(3);
+        balanceEndEl.textContent = totalBalanceEnd.toFixed(3);
 
-        earnedChart.data.labels = labels;
-        earnedChart.data.datasets[0].data = earnedData;
-        earnedChart.update();
-
-        utilizedChart.data.labels = labels;
-        utilizedChart.data.datasets[0].data = utilizedData;
+        // ---- LEFT CHART (EMPLOYEE: EARNED + UTILIZED) ----
+        utilizedChart.data.labels = employeeLabels;
+        utilizedChart.data.datasets[0].data = employeeEarnedData;
+        utilizedChart.data.datasets[1].data = employeeUtilizedData;
         utilizedChart.update();
+
+        // ---- RIGHT CHART (MONTH: EARNED + UTILIZED) ----
+        const monthLabels = fiscalMonths;
+
+        earnedChart.data.labels = monthLabels;
+        earnedChart.data.datasets[0].data = earnedByMonth;
+        earnedChart.data.datasets[1].data = utilizedByMonth;
+        earnedChart.update();
     });
 }
+
+
+
 
 async function populateYearDropdownFromRecords() {
     const employeesRef = ref(database, "employees/CTO");
 
-    // Keep a Set of all years that exist across employees
-    const yearsSet = new Set();
-
-    // Always include current year
-    const currentYear = new Date().getFullYear();
-    yearsSet.add(currentYear.toString());
-
     onValue(employeesRef, snapshot => {
         if (!snapshot.exists()) return;
+
+        const yearsSet = new Set();
+
+        snapshot.forEach(empSnap => {
+            const emp = empSnap.val();
+            if (emp.Years) {
+                Object.keys(emp.Years).forEach(y => {
+                    if (y && y.includes("-")) {
+                        yearsSet.add(y); // only valid fiscal years
+                    }
+                });
+            }
+        });
 
         // Clear existing options
         yearSelect.innerHTML = "";
 
-        snapshot.forEach(empSnap => {
-            const emp = empSnap.val();
-            const years = emp.Years ? Object.keys(emp.Years) : [];
-            years.forEach(y => yearsSet.add(y));
+        // Sort properly: 2025-2026 < 2026-2027
+        const sortedYears = Array.from(yearsSet).sort((a, b) => {
+            const aStart = Number(a.split("-")[0]);
+            const bStart = Number(b.split("-")[0]);
+            return bStart - aStart; // descending
         });
 
-        // Sort years descending
-        const sortedYears = Array.from(yearsSet).sort((a, b) => b - a);
-
-        // Add each year as an option
         sortedYears.forEach(y => {
             const option = document.createElement("option");
             option.value = y;
@@ -128,15 +256,21 @@ async function populateYearDropdownFromRecords() {
             yearSelect.appendChild(option);
         });
 
-        // Select current year by default
-        yearSelect.value = currentYear;
+        // Auto select latest year
+        if (sortedYears.length > 0) {
+            yearSelect.value = sortedYears[0];
+            listenDashboard(sortedYears[0]);
+        }
     });
 }
 
+
 // Listen for year change
 yearSelect.addEventListener("change", () => {
-    listenDashboard(yearSelect.value);
+    const selectedFY = yearSelect.value;
+    listenDashboard(selectedFY);
 });
+
 
 // -------------------------------
 // CHANGE PASSWORD FUNCTIONALITY (Firebase Auth)
